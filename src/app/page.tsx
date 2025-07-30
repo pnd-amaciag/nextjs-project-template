@@ -32,8 +32,7 @@ async function submitQuestionnaire(
     console.log("Server response:", result);
 
     return {
-      message:
-        "Formular erfolgreich abgesendet! Details finden Sie in der Server-Konsole.",
+      message: "Formular erfolgreich abgesendet!",
       data: result.data,
     };
   } catch (error) {
