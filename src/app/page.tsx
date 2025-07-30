@@ -1,9 +1,28 @@
+"use client";
+
 import Image from "next/image";
+import { useState, useEffect } from "react";
 
 export default function Home() {
-  // This will cause an SSR error because window is not available on the server
-  const screenWidth = window.innerWidth;
-  const isMobile = screenWidth < 768;
+  const [screenWidth, setScreenWidth] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState<boolean | null>(null);
+  
+  useEffect(() => {
+    // Now window is safely accessed only on the client side
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    // Set initial values
+    handleResize();
+    
+    // Add event listener for window resize
+    window.addEventListener('resize', handleResize);
+    
+    // Cleanup
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -19,10 +38,16 @@ export default function Home() {
         
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-4">
-            You are viewing this on a {isMobile ? 'mobile' : 'desktop'} device
+            {isMobile === null 
+              ? 'Loading device information...' 
+              : `You are viewing this on a ${isMobile ? 'mobile' : 'desktop'} device`
+            }
           </h1>
           <p className="text-gray-600 dark:text-gray-400">
-            Screen width: {screenWidth}px
+            {screenWidth === null 
+              ? 'Detecting screen width...' 
+              : `Screen width: ${screenWidth}px`
+            }
           </p>
         </div>
         
