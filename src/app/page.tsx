@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 type Todo = {
   id: number;
@@ -10,6 +10,13 @@ type Todo = {
 export default function Home() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [inputValue, setInputValue] = useState("");
+
+  useEffect(() => {
+    fetch('/api/todos')
+      .then(res => res.json())
+      .then(data => setTodos(data))
+      .catch(err => console.error('Failed to fetch todos:', err));
+  }, []);
 
   const addTodo = () => {
     if (inputValue.trim()) {
