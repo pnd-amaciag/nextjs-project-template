@@ -23,17 +23,15 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen p-8 font-[family-name:var(--font-geist-sans)]">
+    <div className="min-h-screen p-8">
       <main className="max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold mb-8">Todo List</h1>
-
         <div className="flex gap-2 mb-6">
           <input
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             placeholder="Add a new todo..."
-            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600"
+            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button
             onClick={addTodo}
@@ -47,7 +45,7 @@ export default function Home() {
           {todos.map((todo: Todo) => (
             <li
               key={todo.id}
-              className="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 rounded-lg"
+              className="flex items-center justify-between p-3 bg-gray-100 rounded-lg"
             >
               <span>{todo.text}</span>
               <button
