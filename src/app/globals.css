@@ -3,6 +3,12 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  
+  /* Chart colors */
+  --chart-primary: #2563eb; /* blue-600 */
+  --chart-grid: #e5e7eb; /* gray-200 */
+  --chart-axis: #d1d5db; /* gray-300 */
+  --chart-text: #6b7280; /* gray-500 */
 }
 
 @theme inline {
@@ -16,6 +22,12 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    
+    /* Chart colors for dark mode */
+    --chart-primary: #60a5fa; /* blue-400 */
+    --chart-grid: #374151; /* gray-700 */
+    --chart-axis: #4b5563; /* gray-600 */
+    --chart-text: #9ca3af; /* gray-400 */
   }
 }
 
