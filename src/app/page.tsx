@@ -21,11 +21,13 @@ export default function Home() {
   const addTodo = () => {
     if (inputValue.trim()) {
       setTodos([...todos, { id: Date.now(), text: inputValue }]);
+      fetch('/api/todos', {method: 'post', body: JSON.stringify({text: inputValue})})
       setInputValue("");
     }
   };
 
   const deleteTodo = (id: number) => {
+    fetch(`/api/todos/${id}`, {method: 'delete'})
     setTodos(todos.filter((todo: Todo) => todo.id !== id));
   };
 
