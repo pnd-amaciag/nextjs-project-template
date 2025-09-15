@@ -16,3 +16,4 @@
 !tsconfig.json
 !next-env.d.ts
 !next.config.ts
+!prisma
