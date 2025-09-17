@@ -5,61 +5,31 @@ import {
   SubmitButton,
   TextInput,
   RadioGroup,
-  StatusMessage,
   SubmittedData,
-  type FormState,
 } from "@/components/questionnaire";
-
-async function submitQuestionnaire(
-  _prevState: FormState,
-  formData: FormData
-): Promise<FormState> {
-  try {
-    const response = await fetch("/api/questionnaire", {
-      method: "POST",
-      body: formData,
-    });
-
-    if (!response.ok) {
-      return {
-        message: "",
-        error:
-          "Fehler beim Absenden des Formulars. Bitte versuchen Sie es erneut.",
-      };
-    }
-
-    const result = await response.json();
-    console.log("Server response:", result);
-
-    return {
-      message: "Formular erfolgreich abgesendet!",
-      data: result.data,
-    };
-  } catch (error) {
-    console.error("Error:", error);
-    return {
-      message: "",
-      error: "Ein Fehler ist beim Absenden des Formulars aufgetreten.",
-    };
-  }
-}
+import { processForm, QuestionResult } from "@/app/actions";
 
 export default function Home() {
-  const [state, formAction] = useActionState(submitQuestionnaire, {
-    message: "",
-  });
+  const [state, formAction] = useActionState<QuestionResult, FormData>(
+    processForm,
+    {
+      name: "",
+      favoriteColor: "",
+      preferredSeason: "",
+    }
+  );
 
   const colorOptions = [
-    { value: "red", label: "Rot" },
-    { value: "blue", label: "Blau" },
-    { value: "green", label: "Grün" },
-    { value: "yellow", label: "Gelb" },
+    { value: "red", label: "Red" },
+    { value: "blue", label: "Blue" },
+    { value: "green", label: "Green" },
+    { value: "yellow", label: "Yellow" },
   ];
 
   const seasonOptions = [
-    { value: "spring", label: "Frühling" },
-    { value: "summer", label: "Sommer" },
-    { value: "fall", label: "Herbst" },
+    { value: "spring", label: "Spring" },
+    { value: "summer", label: "Summer" },
+    { value: "fall", label: "Autumn" },
     { value: "winter", label: "Winter" },
   ];
 
@@ -68,10 +38,10 @@ export default function Home() {
       <div className="max-w-md mx-auto">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900">
-            Kurzer Fragebogen
+            Short questionnaire
           </h1>
           <p className="mt-2 text-gray-600">
-            Bitte beantworten Sie diese drei Fragen
+            Please answer three questions
           </p>
         </div>
 
@@ -82,37 +52,32 @@ export default function Home() {
           <TextInput
             id="name"
             name="name"
-            label="1. Wie ist Ihr Name?"
-            placeholder="Geben Sie Ihren Namen ein"
-            defaultValue={state.data?.name}
+            label="1. What is your name?"
+            placeholder="Please enter your name"
+            defaultValue={state.name}
             required
           />
 
           <RadioGroup
             name="favoriteColor"
-            legend="2. Was ist Ihre Lieblingsfarbe?"
+            legend="2. What is your preferred color?"
             options={colorOptions}
-            defaultValue={state.data?.favoriteColor}
+            defaultValue={state.favoriteColor}
             required
           />
 
           <RadioGroup
             name="preferredSeason"
-            legend="3. Was ist Ihre bevorzugte Jahreszeit?"
+            legend="3. What is your preferred season?"
             options={seasonOptions}
-            defaultValue={state.data?.preferredSeason}
+            defaultValue={state.preferredSeason}
             required
-          />
-
-          <StatusMessage
-            error={state.error}
-            message={state.message && !state.error ? state.message : undefined}
           />
 
           <SubmitButton />
         </form>
 
-        <SubmittedData data={state.data} />
+        <SubmittedData name={state.name} favoriteColor={state.favoriteColor} preferredSeason={state.preferredSeason} />
       </div>
     </div>
   );

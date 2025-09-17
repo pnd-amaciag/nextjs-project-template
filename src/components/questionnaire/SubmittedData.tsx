@@ -1,50 +1,46 @@
-type FormData = {
-  name: string;
-  favoriteColor: string;
-  preferredSeason: string;
-};
+import { QuestionResult } from "@/app/actions";
 
-type SubmittedDataProps = {
-  data: FormData | undefined;
-};
-
-export function SubmittedData({ data }: SubmittedDataProps) {
-  if (!data || !data.name) return null;
+export function SubmittedData({
+  name,
+  favoriteColor,
+  preferredSeason,
+}: QuestionResult) {
+  if (!name) return null;
 
   const colorTranslations: Record<string, string> = {
-    red: "Rot",
-    blue: "Blau",
-    green: "Grün",
-    yellow: "Gelb",
+    red: "Red",
+    blue: "Blue",
+    green: "Green",
+    yellow: "Yellow",
   };
 
   const seasonTranslations: Record<string, string> = {
-    spring: "Frühling",
-    summer: "Sommer",
-    fall: "Herbst",
+    spring: "Spring",
+    summer: "Summer",
+    fall: "Autumn",
     winter: "Winter",
   };
 
   return (
     <div className="mt-6 bg-gray-100 rounded-lg p-4">
-      <h3 className="font-semibold text-gray-700 mb-2">Übermittelte Daten:</h3>
+      <h3 className="font-semibold text-gray-700 mb-2">Sent data:</h3>
       <dl className="space-y-1 text-sm">
         <div>
           <dt className="inline font-medium text-gray-600">Name:</dt>
-          <dd className="inline ml-2">{data.name}</dd>
+          <dd className="inline ml-2">{name}</dd>
         </div>
         <div>
-          <dt className="inline font-medium text-gray-600">Lieblingsfarbe:</dt>
+          <dt className="inline font-medium text-gray-600">Color:</dt>
           <dd className="inline ml-2">
-            {colorTranslations[data.favoriteColor] || data.favoriteColor}
+            {colorTranslations[favoriteColor] ?? favoriteColor}
           </dd>
         </div>
         <div>
           <dt className="inline font-medium text-gray-600">
-            Bevorzugte Jahreszeit:
+            Season:
           </dt>
           <dd className="inline ml-2">
-            {seasonTranslations[data.preferredSeason] || data.preferredSeason}
+            {seasonTranslations[preferredSeason] ?? preferredSeason}
           </dd>
         </div>
       </dl>
