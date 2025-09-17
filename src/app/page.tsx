@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { TodoList } from "../components/TodoList";
 import { Todo } from "../../generated/prisma";
-import { getTodos } from "../actions";
+import { getTodos } from "./actions";
 
 export default function Home() {
   const fetchTodos = async (): Promise<Todo[]> => {

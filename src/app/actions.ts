@@ -2,7 +2,7 @@
 
 import todoService from "@/services/todoService";
 import { revalidatePath } from "next/cache";
-import { Todo } from "../generated/prisma";
+import { Todo } from "../../generated/prisma";
 
 const getBaseUrl = () => {
   if (process.env.NEXT_PUBLIC_APP_URL) {

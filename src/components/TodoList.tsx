@@ -2,7 +2,7 @@
 
 import { startTransition, use, useOptimistic } from "react";
 import { Todo } from "../../generated/prisma";
-import { addTodoAction, deleteTodoAction } from "../actions";
+import { addTodoAction, deleteTodoAction } from "../app/actions";
 
 type TodoAction = { type: "add" | "remove"; todo: Todo };
 
