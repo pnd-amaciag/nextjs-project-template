@@ -1,34 +1,11 @@
-"use client";
-
-import { useState, useEffect } from "react";
-
-type Todo = {
-  id: number;
-  text: string;
-};
+import { Suspense } from "react";
+import { TodoList } from "../components/TodoList";
+import { Todo } from "../../generated/prisma";
+import { getTodos } from "../actions";
 
 export default function Home() {
-  const [todos, setTodos] = useState<Todo[]>([]);
-  const [inputValue, setInputValue] = useState("");
-
-  useEffect(() => {
-    fetch('/api/todos')
-      .then(res => res.json())
-      .then(data => setTodos(data))
-      .catch(err => console.error('Failed to fetch todos:', err));
-  }, []);
-
-  const addTodo = () => {
-    if (inputValue.trim()) {
-      setTodos([...todos, { id: Date.now(), text: inputValue }]);
-      fetch('/api/todos', {method: 'post', body: JSON.stringify({text: inputValue})})
-      setInputValue("");
-    }
-  };
-
-  const deleteTodo = (id: number) => {
-    fetch(`/api/todos/${id}`, {method: 'delete'})
-    setTodos(todos.filter((todo: Todo) => todo.id !== id));
+  const fetchTodos = async (): Promise<Todo[]> => {
+    return getTodos();
   };
 
   return (
@@ -43,39 +20,9 @@ export default function Home() {
             Version
           </a>
         </div>
-
-        <div className="flex gap-2 mb-6">
-          <input
-            type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Add a new todo..."
-            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <button
-            onClick={addTodo}
-            className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-          >
-            Add
-          </button>
-        </div>
-
-        <ul className="space-y-2">
-          {todos.map((todo: Todo) => (
-            <li
-              key={todo.id}
-              className="flex items-center justify-between p-3 bg-gray-100 rounded-lg"
-            >
-              <span>{todo.text}</span>
-              <button
-                onClick={() => deleteTodo(todo.id)}
-                className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition-colors text-sm"
-              >
-                Delete
-              </button>
-            </li>
-          ))}
-        </ul>
+        <Suspense fallback={<div>Data loading...</div>}>
+          <TodoList todoPromise={fetchTodos()}></TodoList>
+        </Suspense>
       </main>
     </div>
   );

@@ -11,7 +11,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      DATABASE_URL: url # EXAMPLE: postgres://app-user:app-password@postgres:5432/app-dev
+      DATABASE_URL: ${DATABASE_URL}
   postgres:
     image: postgres:15-alpine
     environment:
